@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.motorcontrol.VictorSP;
@@ -22,6 +23,8 @@ public class Drivetrain extends SubsystemBase {
   private MotorControllerGroup left;
   private MotorControllerGroup right;
   private DifferentialDrive dd;
+
+  private SlewRateLimiter limiter = new SlewRateLimiter(1.0);
 
   /** Creates a new Drivetrain. */
   public Drivetrain() {
@@ -45,6 +48,6 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public Command drive(DoubleSupplier x, DoubleSupplier z) {
-    return runEnd(() -> { dd.arcadeDrive(x.getAsDouble(), z.getAsDouble()); }, () -> { dd.arcadeDrive(0, 0); });
+    return runEnd(() -> { dd.arcadeDrive(limiter.calculate(z.getAsDouble()) * 0.5, x.getAsDouble() * 0.5); }, () -> { dd.arcadeDrive(0, 0); });
   }
 }
