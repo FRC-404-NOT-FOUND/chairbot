@@ -10,8 +10,7 @@ package frc.robot;
 // import com.pathplanner.lib.PathPlanner;
 // import com.pathplanner.lib.PathPlannerTrajectory;
 
-import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.Joystick;
 import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj2.command.Command;
 
@@ -25,8 +24,9 @@ public class RobotContainer {
   // Subsystems
   final Drivetrain m_drivetrain = new Drivetrain();
 
-  // Operator Input
-  final XboxController gamepad = new XboxController(Constants.DRIVERSTATION_CONTROL_PORT);
+  // Operator Input: two separate joysticks for tank drive (left and right)
+  final Joystick leftStick = new Joystick(Constants.LEFT_JOYSTICK_PORT);
+  final Joystick rightStick = new Joystick(Constants.RIGHT_JOYSTICK_PORT);
 
   // private final List<PathPlannerTrajectory> autoPg = PathPlanner.loadPathGroup("Autonomous", new PathConstraints(4, 3));
 
@@ -42,7 +42,9 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    m_drivetrain.setDefaultCommand(m_drivetrain.drive(() -> gamepad.getLeftY(), () -> gamepad.getRightX()));
+  // Bind default command to left and right Y sticks for tank drive
+  // Default command: left joystick Y controls left wheels, right joystick Y controls right wheels
+  m_drivetrain.setDefaultCommand(m_drivetrain.drive(() -> leftStick.getY(), () -> rightStick.getY()));
   }
 
   /**
