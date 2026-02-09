@@ -24,7 +24,8 @@ public class Drivetrain extends SubsystemBase {
   private MotorControllerGroup right;
   private DifferentialDrive dd;
 
-  private SlewRateLimiter limiter = new SlewRateLimiter(1.0);
+  private SlewRateLimiter leftLimiter = new SlewRateLimiter(1.0);
+  private SlewRateLimiter rightLimiter = new SlewRateLimiter(1.0);
 
   /** Creates a new Drivetrain. */
   public Drivetrain() {
@@ -47,7 +48,15 @@ public class Drivetrain extends SubsystemBase {
     // This method will be called once per scheduler run during simulation
   }
 
-  public Command drive(DoubleSupplier x, DoubleSupplier z) {
-    return runEnd(() -> { dd.arcadeDrive(limiter.calculate(z.getAsDouble()) * 0.5, x.getAsDouble() * 0.5); }, () -> { dd.arcadeDrive(0, 0); });
+  public Command drive(DoubleSupplier leftY, DoubleSupplier rightY) {
+    // Tank drive: leftY controls left side, rightY controls right side
+    return runEnd(() -> {
+      double leftSpeed = leftLimiter.calculate(leftY.getAsDouble()) * 0.7;
+      double rightSpeed = rightLimiter.calculate(rightY.getAsDouble()) * 0.7;
+      // DifferentialDrive.tankDrive expects left, right
+      dd.tankDrive(leftSpeed, rightSpeed);
+    }, () -> {
+      dd.tankDrive(0, 0);
+    });
   }
 }
