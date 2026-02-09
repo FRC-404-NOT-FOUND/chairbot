@@ -13,13 +13,21 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-  public static int DRIVERSTATION_CONTROL_PORT = 0;
 
-  public static int RIGHT_AXIS = 1;
-  public static int LEFT_AXIS = 3;
+  // When using a single gamepad this is the default port. For two-joystick tank drive,
+  // use LEFT_JOYSTICK_PORT and RIGHT_JOYSTICK_PORT instead.
+  public static final int RIGHT_AXIS = 1;
+  public static final int LEFT_AXIS = 3;
 
-  public static int FRONT_LEFT_MOTOR = 0;
-  public static int FRONT_RIGHT_MOTOR = 2;
-  public static int BACK_LEFT_MOTOR = 1;
-  public static int BACK_RIGHT_MOTOR = 3;
+  // Ports for two separate joysticks (left and right) on the driver station USB
+  public static final int LEFT_JOYSTICK_PORT = 0;
+  public static final int RIGHT_JOYSTICK_PORT = 1;
+
+  public static final int FRONT_LEFT_MOTOR = 0;
+  public static final int FRONT_RIGHT_MOTOR = 2;
+  public static final int BACK_LEFT_MOTOR = 1;
+  public static final int BACK_RIGHT_MOTOR = 3;
+
+  /** Team number for convenience. Gradle deploy uses -PteamNumber, this is informational. */
+  public static final int TEAM_NUMBER = 404;
 }
